@@ -13,7 +13,7 @@ router.get('/:id', async (req, res) => {
     const location_id = req.params.id
     if(!location_id){
         res.status(400).json({
-            message : 'MISSING REQUIRED PARAMETER'
+            message : "MISSING REQUIRED PARAMETER"
         })
     }
     try {
