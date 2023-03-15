@@ -13,7 +13,7 @@ router.get('/:id', async (req, res) => {
     const location_id = req.params.id
     if(!location_id){
         res.status(400).json({
-            message : "MISSING REQUIRED PARAMETER"
+            message : 'MISSING REQUIRED PARAMETER'
         })
     }
     try {
@@ -44,9 +44,9 @@ router.post('/location', async (req, res) => {
         place_id
     })
     try {
-        const saveLocation = await newLocation.save()
+        await newLocation.save()
         res.status(201).json({
-            message : "LOCATION CREATED"
+            message : 'LOCATION CREATED'
         })
     } catch (error) {
         res.json({
