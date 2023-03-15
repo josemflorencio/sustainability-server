@@ -11,17 +11,32 @@ router.use(bodyParser.json())
 */
 router.get('/:id', async (req, res) => {
     const location_id = req.params.id
-    const findLocation = await Location.findById(location_id, 'locations').populate('reviews')
-    if(!findLocation){
-        res.status(204).json({
-            message : `NO LOCATION WITH ID: ${location_id} WAS FOUND`
+    if(!location_id){
+        res.status(400).json({
+            message : 'MISSING REQUIRED PARAMETER'
         })
     }
-    else{
-        res.status(200).json(findLocation)
+    try {
+        const entry = await Location.findById(location_id)
+        if(!entry){
+            res.status(400).json({
+                message : `LOCATION WITH ID: ${location_id} NOT FOUND`
+            })
+        }
+        else{
+            res.status(200).json({
+                entry
+            })
+        }
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({
+            message : error
+        })
     }
-
 })
+
+router.get('/:id/reviews', )
 
 router.post('/location', async (req, res) => {
     const place_id  = req.body.place_id
