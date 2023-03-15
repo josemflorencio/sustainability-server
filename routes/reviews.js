@@ -7,9 +7,9 @@ const bodyParser = require('body-parser')
 router.use(bodyParser.json())
 
 router.get('/', async (req, res) => {
-  const user_id = req.body.author_id
+  const userID = req.body.author_id
   try {
-    const userReviews = await Users.findById(user_id, 'reviews').populate('reviews')
+    const userReviews = await Users.findById(userID, 'reviews').populate('reviews')
     res.status(200).json(userReviews)
   } catch (error) {
     res.json(error)
@@ -30,15 +30,15 @@ router.delete('/delete-review/:id', async (req, res) => {
 })
 
 router.post('/submit-review', async (req, res) => {
-  const { author_id, rating, review } = req.body
+  const { authorID, rating, review } = req.body
   const newReview = new Review({
-    author_id,
+    authorID,
     rating,
     review
   })
   try {
     const saveReview = await newReview.save()
-    await Users.findByIdAndUpdate(author_id, { $push: { reviews: saveReview.id } })
+    await Users.findByIdAndUpdate(authorID, { $push: { reviews: saveReview.id } })
     res.status(201).json({
       message: 'REVIEW_SUCCESSFULLY_SAVED'
     })

@@ -10,17 +10,17 @@ router.use(bodyParser.json())
     reponse: a location document
 */
 router.get('/:id', async (req, res) => {
-  const location_id = req.params.id
-  if (!location_id) {
+  const locationID = req.params.id
+  if (!locationID) {
     res.status(400).json({
       message: 'MISSING REQUIRED PARAMETER'
     })
   }
   try {
-    const entry = await Location.findById(location_id)
+    const entry = await Location.findById(locationID)
     if (!entry) {
       res.status(400).json({
-        message: `LOCATION WITH ID: ${location_id} NOT FOUND`
+        message: `LOCATION WITH ID: ${locationID} NOT FOUND`
       })
     } else {
       res.status(200).json({
@@ -38,9 +38,9 @@ router.get('/:id', async (req, res) => {
 router.get('/:id/reviews')
 
 router.post('/location', async (req, res) => {
-  const place_id = req.body.place_id
+  const placeID = req.body.place_id
   const newLocation = new Location({
-    place_id
+    placeID
   })
   try {
     await newLocation.save()
