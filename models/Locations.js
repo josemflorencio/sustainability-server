@@ -1,5 +1,15 @@
 const mongoose = require('mongoose')
 
+/*
+LOCATION SCHEMA
+{
+    name:""
+    place_id:""
+    address:""
+    rating: Number
+    reviews: []
+}
+*/
 const locationSchema = new mongoose.Schema({
     name: {
         type: String,

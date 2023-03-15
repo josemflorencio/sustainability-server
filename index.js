@@ -2,6 +2,8 @@ const express = require("express")
 const app = express()
 const mongoose = require("mongoose")
 const dotenv = require('dotenv')
+
+//ROUTE FILE IMPORTS
 const Register = require('./routes/register')
 const Reviews = require('./routes/reviews')
 const Locations = require('./routes/locations')

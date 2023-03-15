@@ -1,5 +1,15 @@
 const mongoose = require("mongoose")
 
+
+/*
+    USER SCHEMA
+    {
+        username: ""
+        email: ""
+        password: ""
+        reviews: []
+    }
+*/
 const UserSchema = new mongoose.Schema({
     username: {
         type: String, 

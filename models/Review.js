@@ -1,5 +1,13 @@
 const mongoose = require('mongoose')
 
+/*
+REVIEWS SCHEMA
+{
+    author_id: ""
+    rating: Number
+    review: ""
+}
+*/
 const reviewSchema = new mongoose.Schema({
     author_id: {
         type: mongoose.Schema.Types.ObjectId,
