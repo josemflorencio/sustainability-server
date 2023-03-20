@@ -16,6 +16,8 @@ router.get('/', async (req, res) => {
   }
 })
 
+//STILL NEED POST REVIEW
+
 router.delete('/delete-review/:id', async (req, res) => {
   const deleteReview = await Review.findByIdAndDelete({ _id: req.params.id })
   if (!deleteReview) {
@@ -25,26 +27,6 @@ router.delete('/delete-review/:id', async (req, res) => {
   } else {
     res.status(200).json({
       message: 'REVIEW_SUCCESSFULLY_DELETED'
-    })
-  }
-})
-
-router.post('/submit-review', async (req, res) => {
-  const { authorID, rating, review } = req.body
-  const newReview = new Review({
-    authorID,
-    rating,
-    review
-  })
-  try {
-    const saveReview = await newReview.save()
-    await Users.findByIdAndUpdate(authorID, { $push: { reviews: saveReview.id } })
-    res.status(201).json({
-      message: 'REVIEW_SUCCESSFULLY_SAVED'
-    })
-  } catch (error) {
-    res.json({
-      message: error
     })
   }
 })

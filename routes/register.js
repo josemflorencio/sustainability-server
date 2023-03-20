@@ -1,24 +1,38 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const User = require('../models/User')
+const bcrypt = require('bcrypt')
 const router = express.Router()
 
 router.use(bodyParser.json())
-router.use(bodyParser.urlencoded({ extended: true }))
+router.use(bodyParser.urlencoded({ extended: false }))
 
 router.post('/', async (req, res) => {
-  const { username, email, password } = req.body
-  const registerUser = new User({
-    username,
-    email,
-    password
+  const user = await User.findOne({email : req.body.email})
+  if(user){
+    res.status(409).json({
+      message : 'EMAIL ALREADY EXISTS'
+    })
+    return
+  }
+
+  const salt_rounds = 10
+  const hash_password = await bcrypt.hash(req.body.password, salt_rounds)
+
+  const newUser = new User({
+    username : req.body.username,
+    email : req.body.email,
+    password : hash_password
   })
+
   try {
-    await registerUser.save()
-    res.status(201).json(registerUser)
-  } catch (err) {
-    res.status(400).json({
-      message: err.message
+    await newUser.save()
+    res.status(201).json({
+      message : 'NEW USER SUCCESSFULLY CREATED'
+    })
+  } catch (error) {
+    res.status(500).json({
+      message : error
     })
   }
 })
