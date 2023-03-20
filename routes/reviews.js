@@ -1,12 +1,13 @@
 const express = require('express')
 const Review = require('../models/Review')
 const Users = require('../models/User')
+const auth = require('../middleware/authorization')
 const router = express.Router()
 
 const bodyParser = require('body-parser')
 router.use(bodyParser.json())
 
-router.get('/', async (req, res) => {
+router.get('/', auth, async (req, res) => {
   const userID = req.body.author_id
   try {
     const userReviews = await Users.findById(userID, 'reviews').populate('reviews')
