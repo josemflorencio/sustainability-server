@@ -9,6 +9,11 @@ REVIEWS SCHEMA
 }
 */
 const reviewSchema = new mongoose.Schema({
+  location:{
+    type: String,
+    required: true,
+    ref: 'Location'
+  },
   author_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
