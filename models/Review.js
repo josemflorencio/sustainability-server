@@ -9,7 +9,7 @@ REVIEWS SCHEMA
 }
 */
 const reviewSchema = new mongoose.Schema({
-  location:{
+  location: {
     type: String,
     required: true,
     ref: 'Location'
