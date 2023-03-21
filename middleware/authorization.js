@@ -3,7 +3,6 @@ const User = require('../models/User')
 
 function authorizationMiddleware(req, res, next){
     const authToken = req.headers.authorization.split(' ')[1]
-    console.log(req.headers.authorization.split(' ')[1])
     jwt.verify(authToken, process.env.SECRET, (err, decoded) => {
         if(err){
             res.status(401).json({
@@ -11,10 +10,10 @@ function authorizationMiddleware(req, res, next){
             })
             return
         } else {
-            console.log(decoded)
+            res.locals.userid = decoded.id
+            next()
         }
     })
-    next()
 }
 
 module.exports = authorizationMiddleware
