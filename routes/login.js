@@ -10,6 +10,12 @@ router.use(bodyParser.urlencoded({extended:false}))
 router.post('/', async (req, res) => {
     const {email, password} = req.body
 
+    if(!email){
+        return res.status(400).json({
+            message : 'EMAIL REQUIRED'
+        })
+    }
+
     const user = await User.findOne({email : email})
     if(!user){
         res.status(404).json({
@@ -29,9 +35,8 @@ router.post('/', async (req, res) => {
 
     const token = jwt.sign({id : user._id}, process.env.SECRET, {expiresIn: '12h'})
 
-    res.cookie('token', token, {httpOnly:true})
-    res.json({
-        LogginIn : true
+    res.status(200).json({
+        access_token : token
     })
 })
 
