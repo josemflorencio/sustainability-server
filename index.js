@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()
 const mongoose = require('mongoose')
 const dotenv = require('dotenv')
+const cors = require('cors')
 
 // ROUTE FILE IMPORTS
 const Register = require('./routes/register')
@@ -13,6 +14,7 @@ dotenv.config()
 
 const PORT = process.env.PORT
 
+app.use(cors())
 app.use('/register', Register)
 app.use('/login', Login)
 app.use('/reviews', Reviews)

@@ -1,7 +1,6 @@
 const express = require('express')
 const Review = require('../models/Review')
 const Location = require('../models/Locations')
-const auth = require('../middleware/authorization')
 const router = express.Router()
 
 const bodyParser = require('body-parser')
@@ -27,7 +26,7 @@ router.use(bodyParser.json())
           if the place_id is not found in the database, a new document is created
           using the place_id and the review is successfully added to it
 */
-router.post('/submit-review', auth, async (req, res) => {
+router.post('/submit-review', async (req, res) => {
   const { place_id, rating, review } = req.body
   const author_id = res.locals.userid
 
@@ -74,7 +73,7 @@ router.post('/submit-review', auth, async (req, res) => {
   notes :
       protected endpoint, auth token required to be passed by header
 */
-router.delete('/delete-review/:id', auth, async (req, res) => {
+router.delete('/delete-review/:id', async (req, res) => {
   try {
     const entry = await Review.findByIdAndDelete({ _id: req.params.id })
     if (!entry) {

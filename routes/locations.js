@@ -1,4 +1,5 @@
 const express = require('express')
+const cors = require('cors')
 const bodyParser = require('body-parser')
 const router = express.Router()
 const Location = require('../models/Locations')
@@ -37,6 +38,7 @@ router.use(bodyParser.urlencoded({ extended: true }))
         To get reviews use the GET /:id/reviews endpoint
 */
 router.get('/:id', async (req, res) => {
+  console.log('route accessed')
   const locationID = req.params.id
   if (!locationID) {
     res.status(400).json({
@@ -46,14 +48,17 @@ router.get('/:id', async (req, res) => {
   try {
     const entry = await Location.findOne({ place_id: locationID })
     if (!entry) {
-      res.status(400).json({
-        message: `LOCATION WITH ID: ${locationID} NOT FOUND`
+      const new_entry = new Location({
+        place_id : locationID
       })
-    } else {
-      res.status(200).json({
-        entry
+      await new_entry.save()
+      return res.status(200).json({
+        new_entry
       })
     }
+    res.status(200).json({
+      entry
+    })
   } catch (error) {
     res.status(500).json({
       message: error
@@ -91,9 +96,9 @@ router.get('/:id', async (req, res) => {
       reviews array will be null if the location has no stored reviews in
       the database
 */
-router.get('/:id/reviews', async (req, res) => {
+router.get('/reviews/:id', async (req, res) => {
   const locationID = req.params.id
-  if (!locationID) {
+  if (locationID == '') {
     res.status(400).json({
       message: 'MISSING REQUIRED PARAMETER'
     })
@@ -103,14 +108,13 @@ router.get('/:id/reviews', async (req, res) => {
       path: 'reviews',
       populate: { path: 'author_id' }
     })
-    const reviews = entry.reviews
     if (!entry) {
-      res.status(400).json({
-        message: `LOCATION WITH ID: ${locationID} NOT FOUND`
+      const new_entry = new Location({
+        place_id : locationID
       })
-    } else {
+      await new_entry.save()
       res.status(200).json({
-        reviews
+        new_entry
       })
     }
   } catch (error) {
