@@ -46,7 +46,7 @@ router.delete('/delete-review/:id', async (req, res) => {
   try {
     const entry = await Review.findByIdAndDelete({ _id: req.params.id })
     if (!entry) {
-      res.status(404).json({
+      return res.status(404).json({
         message: 'ENTRY NOT FOUND'
       })
     }
