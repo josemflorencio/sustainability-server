@@ -37,6 +37,7 @@ router.get('/:id', async (req, res) => {
 })
 
 router.get('/reviews/:id', async (req, res) => {
+  console.log('route accessed')
   const locationID = req.params.id
   if (!locationID) {
     res.status(400).json({
@@ -45,7 +46,6 @@ router.get('/reviews/:id', async (req, res) => {
   }
   try {
     const entry = await Location.findOne({ place_id: locationID }).populate('reviews')
-    const reviews = entry.reviews
     if (!entry) {
       const new_entry = new Location({
         place_id : locationID
@@ -55,10 +55,18 @@ router.get('/reviews/:id', async (req, res) => {
         reviews : []
       })
     }
+    if(entry.reviews == null){
+      console.log('here')
+      return res.status(200).json({
+        reviews : []
+      })
+    }
+    const reviews = entry.reviews
     res.status(200).json({
       reviews
     })
   } catch (error) {
+    console.log(error)
     res.status(500).json({
       message: error
     })

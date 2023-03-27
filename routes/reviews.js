@@ -36,7 +36,7 @@ router.post('/submit-review', async (req, res) => {
     })
   } catch (error) {
     console.log(error)
-    res.status(500).json({
+    return res.status(500).json({
       message: error
     })
   }
