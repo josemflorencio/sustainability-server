@@ -7,7 +7,7 @@ import axios from 'axios'
 //sends GET request to backend api for a particular location
 //returns : reviews array for a given location
 //notes : if a marker has no associated database entry, the backend will deal with creating an entry with this endpoint call
-function getLocationReviews(place_id) {
+async function getLocationReviews(place_id) {
     console.log(place_id)
     if(!place_id){
         return null
