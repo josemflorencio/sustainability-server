@@ -7,36 +7,6 @@ const Location = require('../models/Locations')
 router.use(bodyParser.json())
 router.use(bodyParser.urlencoded({ extended: true }))
 
-/*
-    GET METHOD
-    PARAMETERS:
-      /{id} <-- place_id
-
-    RESPONSES:
-      FAILURE RESPONSES:
-        {
-          message : 'MISSING REQUIRED PARAMETERS' (id is missing)
-        }
-        {
-          message : `LOCATION WITH ID: ${locationID} NOT FOUND`
-        }
-
-      SUCESS RESPONSES:
-        {
-          entry : {
-            _id : (database id)
-            name : "" (only if applicable, may be undefined)
-            place_id : ""
-            address : "" (if appicable, may be undefined)
-            reviews : [] (Array)
-            __v : (Number)
-          }
-        }
-      notes :
-        this api call does not populate the reviews array, and will only
-        return the review IDs.
-        To get reviews use the GET /:id/reviews endpoint
-*/
 router.get('/:id', async (req, res) => {
   console.log('route accessed')
   const locationID = req.params.id
@@ -66,36 +36,6 @@ router.get('/:id', async (req, res) => {
   }
 })
 
-/*
-  GET METHOD
-  PARAMETERS:
-    ID <-- place_id
-
-  RESPONSES:
-    FAILURE RESPONSES:
-      {
-        message : 'MISSING REQUIRED PARAMETERS' (id is missing)
-      }
-      {
-        message : `LOCATION WITH ID: ${locationID} NOT FOUND`
-      }
-    SUCESS RESPONSES:
-    {
-      _id: (database id),
-      location: "<place_id>",
-      author_id: {},
-      rating: Number,
-      createdAt: <timestamp>,
-      updatedAt: <timestamp>,
-      __v: Number
-    }
-    notes:
-      the "author_id" field will be populated with the authors information
-      such as email and username
-
-      reviews array will be null if the location has no stored reviews in
-      the database
-*/
 router.get('/reviews/:id', async (req, res) => {
   const locationID = req.params.id
   if (!locationID) {
@@ -126,9 +66,7 @@ router.get('/reviews/:id', async (req, res) => {
 })
 
 /*
-  POST METHOD
-  this is a temporary endpoint for saving new entries into the database from the client
-  *** used for testing ***
+  *** ignore this ***
 */
 router.post('/location', async (req, res) => {
   const placeID = req.body.place_id

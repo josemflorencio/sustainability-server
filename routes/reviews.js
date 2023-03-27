@@ -6,26 +6,6 @@ const router = express.Router()
 const bodyParser = require('body-parser')
 router.use(bodyParser.json())
 
-/*
-  ENDPOINT FOR SUBMITTING AND STORING REVIEWS
-  USAGE :
-      BODY PARAMETERS:
-          {
-            place_id : [REQUIRED],
-            rating : [REQUIRED],
-            review : [REQUIRED]
-          }
-      response :
-          {
-            message : 'REVIEW CREATED'
-          }
-  notes:
-          auth token required to be passed by header to api,
-          response will return invalid token message otherwise
-
-          if the place_id is not found in the database, a new document is created
-          using the place_id and the review is successfully added to it
-*/
 router.post('/submit-review', async (req, res) => {
   const { place_id, rating, review } = req.body
 
@@ -63,12 +43,6 @@ router.post('/submit-review', async (req, res) => {
   }
 })
 
-/*
-  ENDPOINT FOR DELETING REVIEWS
-  USAGE :
-      PATH : /delete-review/{id}
-      looks for review with specified id
-*/
 router.delete('/delete-review/:id', async (req, res) => {
   try {
     const entry = await Review.findByIdAndDelete({ _id: req.params.id })
