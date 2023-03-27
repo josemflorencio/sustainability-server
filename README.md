@@ -17,7 +17,8 @@ Instructions for backendwrappers.js:
     copy and paste the file onto front end file structure and use these functions to call the backend client-side
 
     getLocationReviews(place_id):
-        notes: this function calls a GET request for a location referenced by its place_id. If a place_id has no associated database entry, the backend endpoint will create one so that it may be usable in future calls using the same place_id
+        notes: this function calls a GET request for a location referenced by its place_id. 
+        If a place_id has no associated database entry, the backend endpoint will create one so that it may be usable in future calls using the same place_id
 
         the function will return if no place_id is passed
 
