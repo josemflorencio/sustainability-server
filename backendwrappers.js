@@ -1,3 +1,7 @@
+/*
+    COPY AND PASTE THIS FILE ONTO CLIENT SIDE SCRIPT
+*/
+
 import axios from 'axios'
 
 //sends GET request to backend api for a particular location
