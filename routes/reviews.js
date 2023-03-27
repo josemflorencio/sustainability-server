@@ -26,7 +26,6 @@ router.post('/submit-review', async (req, res) => {
       const new_location = new Location({
         place_id
       })
-      console.log('hello')
       await new_location.save()
     }
 
