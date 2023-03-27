@@ -23,7 +23,7 @@ async function postLocationReview(place_id, rating, text){
     if(!place_id){
         return "no place_id"
     }
-    axios.post(`http://127.0.0.1:4000/reviews/submit-review`, {
+    await axios.post(`http://127.0.0.1:4000/reviews/submit-review`, {
         place_id : place_id,
         rating : rating,
         review : text
