@@ -28,7 +28,6 @@ router.use(bodyParser.json())
 */
 router.post('/submit-review', async (req, res) => {
   const { place_id, rating, review } = req.body
-  const author_id = res.locals.userid
 
   if (!place_id || !rating || !review) {
     res.status(400).json({
@@ -38,8 +37,7 @@ router.post('/submit-review', async (req, res) => {
 
   try {
     const new_review = new Review({
-      location: place_id,
-      author_id,
+      place_id,
       rating,
       review
     })
@@ -70,8 +68,6 @@ router.post('/submit-review', async (req, res) => {
   USAGE :
       PATH : /delete-review/{id}
       looks for review with specified id
-  notes :
-      protected endpoint, auth token required to be passed by header
 */
 router.delete('/delete-review/:id', async (req, res) => {
   try {

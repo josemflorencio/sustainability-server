@@ -41,7 +41,7 @@ router.get('/:id', async (req, res) => {
   console.log('route accessed')
   const locationID = req.params.id
   if (!locationID) {
-    res.status(400).json({
+    return res.status(400).json({
       message: 'MISSING REQUIRED PARAMETER'
     })
   }
@@ -98,25 +98,26 @@ router.get('/:id', async (req, res) => {
 */
 router.get('/reviews/:id', async (req, res) => {
   const locationID = req.params.id
-  if (locationID == '') {
+  if (!locationID) {
     res.status(400).json({
       message: 'MISSING REQUIRED PARAMETER'
     })
   }
   try {
-    const entry = await Location.findOne({ place_id: locationID }).populate({
-      path: 'reviews',
-      populate: { path: 'author_id' }
-    })
+    const entry = await Location.findOne({ place_id: locationID }).populate('reviews')
+    const reviews = entry.reviews
     if (!entry) {
       const new_entry = new Location({
         place_id : locationID
       })
       await new_entry.save()
-      res.status(200).json({
-        new_entry
+      return res.status(200).json({
+        reviews : []
       })
     }
+    res.status(200).json({
+      reviews
+    })
   } catch (error) {
     res.status(500).json({
       message: error
