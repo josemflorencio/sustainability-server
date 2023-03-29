@@ -10,7 +10,7 @@ router.post('/submit-review', async (req, res) => {
   const { place_id, rating, review } = req.body
 
   if (!place_id || !rating || !review) {
-    res.status(400).json({
+    return res.status(400).json({
       message: 'MISSING REQUIRED PARAMETER'
     })
   }
@@ -31,7 +31,7 @@ router.post('/submit-review', async (req, res) => {
 
     await new_review.save()
     const update_location = await Location.findOneAndUpdate({ place_id }, { $push: { reviews: new_review._id } })
-    res.status(200).json({
+    return res.status(200).json({
       message: 'REVIEW CREATED'
     })
   } catch (error) {
