@@ -19,7 +19,7 @@ const reviewSchema = new mongoose.Schema({
     ref: 'User'
   },
   rating: {
-    type: Number,
+    type: Number
   },
   review: {
     type: String,

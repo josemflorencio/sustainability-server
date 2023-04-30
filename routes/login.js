@@ -7,13 +7,13 @@ const jwt = require('jsonwebtoken')
 router.use(bodyParser.urlencoded({ extended: false }))
 
 router.post('/', async (req, res) => {
-  const id_token = req.headers.authorization.split(" ")[1]
-  const decoded = jwt.decode(id_token);
+  const id_token = req.headers.authorization.split(' ')[1]
+  const decoded = jwt.decode(id_token)
 
-  const sub = decoded.sub;
-  const exists = await User.findOne({sub: sub})
+  const sub = decoded.sub
+  const exists = await User.findOne({ sub })
 
-  if(!exists){
+  if (!exists) {
     const new_user = new User({
       username: decoded.nickname,
       email: decoded.email,
@@ -22,13 +22,12 @@ router.post('/', async (req, res) => {
     try {
       new_user.save()
       res.json({
-        message : 'Success'
+        message: 'Success'
       })
     } catch (error) {
       console.log(error)
     }
   }
-
 })
 
 module.exports = router

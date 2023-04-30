@@ -10,12 +10,18 @@ router.use(bodyParser.json())
 router.post('/submit-review', async (req, res) => {
   const { place_id, user_id, rating, review } = req.body
 
-  const user_query = await User.findOne({sub: user_id})
+  const user_query = await User.findOne({ sub: user_id })
   const author_id = user_query._id
+
+  if (await Review.findOne({ place_id, author_id })) {
+    return res.status(403).json({
+      message: 'REVIEW POST LIMIT EXCEEDED'
+    })
+  }
 
   console.log(author_id)
 
-  if (!place_id || !rating || !review) {
+  if (!place_id || !rating || !review || !user_id) {
     return res.status(400).json({
       message: 'MISSING REQUIRED PARAMETER'
     })
@@ -36,8 +42,9 @@ router.post('/submit-review', async (req, res) => {
       await new_location.save()
     }
 
-    await new_review.save()
-    const update_location = await Location.findOneAndUpdate({ place_id }, { $push: { reviews: new_review._id } })
+    const saved_review = await new_review.save()
+    const update_location = await Location.findOneAndUpdate({ place_id }, { $push: { reviews: saved_review._id } })
+    const update_user = await User.findOneAndUpdate({ _id: author_id }, { $push: { reviews: saved_review._id } })
     return res.status(200).json({
       message: 'REVIEW CREATED'
     })

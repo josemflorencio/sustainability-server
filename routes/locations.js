@@ -19,7 +19,7 @@ router.get('/:id', async (req, res) => {
     const entry = await Location.findOne({ place_id: locationID })
     if (!entry) {
       const new_entry = new Location({
-        place_id : locationID
+        place_id: locationID
       })
       await new_entry.save()
       return res.status(200).json({
@@ -48,17 +48,17 @@ router.get('/reviews/:id', async (req, res) => {
     const entry = await Location.findOne({ place_id: locationID }).populate('reviews')
     if (!entry) {
       const new_entry = new Location({
-        place_id : locationID
+        place_id: locationID
       })
       await new_entry.save()
       return res.status(200).json({
-        reviews : []
+        reviews: []
       })
     }
-    if(entry.reviews == null){
+    if (entry.reviews == null) {
       console.log('here')
       return res.status(200).json({
-        reviews : []
+        reviews: []
       })
     }
     const reviews = entry.reviews
