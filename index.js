@@ -3,6 +3,7 @@ const app = express()
 const mongoose = require('mongoose')
 const dotenv = require('dotenv')
 const cors = require('cors')
+const morgan = require('morgan')
 
 // ROUTE FILE IMPORTS
 const Register = require('./routes/register')
@@ -14,6 +15,7 @@ dotenv.config()
 
 const PORT = process.env.PORT
 
+app.use(morgan('tiny'))
 app.use(cors())
 app.use('/register', Register)
 app.use('/login', Login)
