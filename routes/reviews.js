@@ -1,4 +1,5 @@
 const express = require('express')
+const User = require('../models/User')
 const Review = require('../models/Review')
 const Location = require('../models/Locations')
 const router = express.Router()
@@ -7,7 +8,12 @@ const bodyParser = require('body-parser')
 router.use(bodyParser.json())
 
 router.post('/submit-review', async (req, res) => {
-  const { place_id, rating, review } = req.body
+  const { place_id, user_id, rating, review } = req.body
+
+  const user_query = await User.findOne({sub: user_id})
+  const author_id = user_query._id
+
+  console.log(author_id)
 
   if (!place_id || !rating || !review) {
     return res.status(400).json({
@@ -18,6 +24,7 @@ router.post('/submit-review', async (req, res) => {
   try {
     const new_review = new Review({
       place_id,
+      author_id,
       rating,
       review
     })
