@@ -16,7 +16,7 @@ const reviewSchema = new mongoose.Schema({
   },
   author_id: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+    ref: 'User'
   },
   rating: {
     type: Number,

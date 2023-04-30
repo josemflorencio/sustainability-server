@@ -20,10 +20,10 @@ const UserSchema = new mongoose.Schema({
     unique: true,
     lowercase: true
   },
-  password: {
+  sub: {
     type: String,
     required: true,
-    select: false
+    unique: true
   },
   reviews: [{
     type: mongoose.Schema.Types.ObjectId,
