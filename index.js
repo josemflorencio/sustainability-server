@@ -6,7 +6,6 @@ const cors = require('cors')
 const morgan = require('morgan')
 
 // ROUTE FILE IMPORTS
-const Register = require('./routes/register')
 const Login = require('./routes/login')
 const Reviews = require('./routes/reviews')
 const Locations = require('./routes/locations')
@@ -17,7 +16,6 @@ const PORT = process.env.PORT
 
 app.use(morgan('tiny'))
 app.use(cors())
-app.use('/register', Register)
 app.use('/login', Login)
 app.use('/reviews', Reviews)
 app.use('/locations', Locations)

@@ -10,6 +10,12 @@ router.use(bodyParser.json())
 router.post('/submit-review', async (req, res) => {
   const { place_id, user_id, rating, review } = req.body
 
+  if (!place_id || !rating || !review || !user_id) {
+    return res.status(400).json({
+      message: 'MISSING REQUIRED PARAMETER'
+    })
+  }
+
   const user_query = await User.findOne({ sub: user_id })
   const author_id = user_query._id
 
