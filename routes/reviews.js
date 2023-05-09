@@ -3,11 +3,12 @@ const User = require('../models/User')
 const Review = require('../models/Review')
 const Location = require('../models/Locations')
 const router = express.Router()
+const auth = require('../prerequesthandlers/authorization')
 
 const bodyParser = require('body-parser')
 router.use(bodyParser.json())
 
-router.post('/submit-review', async (req, res) => {
+router.post('/submit-review', auth,  async (req, res) => {
   const { place_id, user_id, rating, review } = req.body
 
   if (!place_id || !rating || !review || !user_id) {

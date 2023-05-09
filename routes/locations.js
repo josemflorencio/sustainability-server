@@ -1,8 +1,8 @@
 const express = require('express')
-const cors = require('cors')
 const bodyParser = require('body-parser')
 const router = express.Router()
 const Location = require('../models/Locations')
+const auth = require('../prerequesthandlers/authorization')
 
 router.use(bodyParser.json())
 router.use(bodyParser.urlencoded({ extended: true }))
