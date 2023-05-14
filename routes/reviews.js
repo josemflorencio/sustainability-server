@@ -6,11 +6,19 @@ const router = express.Router()
 const auth = require('../prerequesthandlers/authorization')
 
 const bodyParser = require('body-parser')
-router.use(bodyParser.json())
 
-router.post('/submit-review', auth,  async (req, res) => {
+router.use(bodyParser.json())
+router.use(bodyParser.urlencoded({ extended: true }))
+
+/*
+submit review endpoint
+must pass auth middleware before handling request
+*/
+router.post('/submit-review', auth, async (req, res) => {
+  //extracting paramters from request body
   const { place_id, user_id, rating, review } = req.body
 
+  //if parameters are missing, the endpoint returns status 400
   if (!place_id || !rating || !review || !user_id) {
     return res.status(400).json({
       message: 'MISSING REQUIRED PARAMETER'
@@ -64,23 +72,22 @@ router.post('/submit-review', auth,  async (req, res) => {
 })
 
 router.delete('/delete-review/:id', async (req, res) => {
+  console.log(req.params.id)
+  const entry = await Review.findById(req.params.id)
+  if (!entry) {
+    return res.status(404).json({
+      message: 'Review not found'
+    })
+  }
+  const { author_id, place_id } = entry
+  console.log(place_id)
   try {
-    const entry = await Review.findByIdAndDelete({ _id: req.params.id })
-    if (!entry) {
-      return res.status(404).json({
-        message: 'ENTRY NOT FOUND'
-      })
-    }
-    console.log(entry)
-    const update_location = await Location.findOneAndUpdate({ place_id: entry.location }, { $pull: { reviews: req.params.id } })
-    console.log(update_location)
-    res.status(200).json({
-      message: 'REVIEW DELETED'
-    })
+    await Review.findByIdAndDelete(req.params.id)
+    await Location.findOneAndUpdate({ place_id: place_id }, { $pull: { reviews: req.params.id } })
+    await User.findByIdAndUpdate(author_id, { $pull: { reviews: req.params.id } })
+    return res.status(200).json({message: 'Review deleted'})
   } catch (error) {
-    res.status(500).json({
-      message: 'SERVER ERROR'
-    })
+    console.log(error)
   }
 })
 
