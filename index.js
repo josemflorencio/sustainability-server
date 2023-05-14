@@ -9,6 +9,7 @@ const morgan = require('morgan')
 const Login = require('./routes/login')
 const Reviews = require('./routes/reviews')
 const Locations = require('./routes/locations')
+const Users = require('./routes/user')
 
 dotenv.config()
 
@@ -19,6 +20,7 @@ app.use(cors())
 app.use('/login', Login)
 app.use('/reviews', Reviews)
 app.use('/locations', Locations)
+app.use('/user', Users)
 
 mongoose.connect(process.env.db)
 
