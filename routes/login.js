@@ -16,7 +16,7 @@ router.post('/', async (req, res) => {
   const decoded = jwt.decode(id_token, { complete: true })
 
   const sub = decoded.payload.sub
-  const exists = await User.findOne({ sub })
+  const exists = await User.findOne({ sub }).populate('reviews')
 
   if (!exists) {
     const new_user = new User({
@@ -25,15 +25,19 @@ router.post('/', async (req, res) => {
       sub: decoded.payload.sub
     })
     try {
-      new_user.save()
+      await new_user.save()
       return res.json({
-        message: 'Success'
+        message: 'Success',
+        user: new_user
       })
     } catch (error) {
       console.log(error)
     }
   } else {
-    return res.json({ message: 'SUCCESS' })
+    return res.json({
+      message: 'SUCCESS',
+      user: exists
+    })
   }
 })
 
