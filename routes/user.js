@@ -26,7 +26,14 @@ router.get('/:id', auth, async (req, res) => {
 
 router.post('/add-favorite/:id', auth, async (req, res) => {
   try {
-    const location = await Location.findOne({ place_id: req.body.location })
+    const location = await Location.findOne({ place_id: req.body.place_id })
+    const user = await User.findOne({ sub: req.params.id }).populate('favorites')
+    console.log(await User.findOne({ favorites: location._id }))
+    if (await User.findOne({ favorites: location._id })) {
+      return res.status(400).json({
+        message: 'Failed to Favorite - Store already favorited'
+      })
+    }
     await User.findOneAndUpdate({ sub: req.params.id }, { $push: { favorites: location._id } })
     return res.status(200).json({ message: 'Success' })
   } catch (error) {

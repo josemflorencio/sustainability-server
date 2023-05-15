@@ -15,10 +15,10 @@ submit review endpoint
 must pass auth middleware before handling request
 */
 router.post('/submit-review', auth, async (req, res) => {
-  //extracting paramters from request body
+  // extracting paramters from request body
   const { place_id, user_id, rating, review } = req.body
 
-  //if parameters are missing, the endpoint returns status 400
+  // if parameters are missing, the endpoint returns status 400
   if (!place_id || !rating || !review || !user_id) {
     return res.status(400).json({
       message: 'MISSING REQUIRED PARAMETER'
