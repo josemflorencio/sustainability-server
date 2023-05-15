@@ -8,8 +8,8 @@ router.use(bodyParser.json())
 router.use(bodyParser.urlencoded({ extended: true }))
 
 router.get('/:id', async (req, res) => {
-  console.log('route accessed')
   const locationID = req.params.id
+  console.log(req.query)
   if (!locationID) {
     return res.status(400).json({
       message: 'MISSING REQUIRED PARAMETER'
@@ -19,6 +19,7 @@ router.get('/:id', async (req, res) => {
     const entry = await Location.findOne({ place_id: locationID })
     if (!entry) {
       const new_entry = new Location({
+        name: req.query.place_name,
         place_id: locationID
       })
       await new_entry.save()
@@ -37,7 +38,6 @@ router.get('/:id', async (req, res) => {
 })
 
 router.get('/reviews/:id', async (req, res) => {
-  console.log('route accessed')
   const locationID = req.params.id
   if (!locationID) {
     res.status(400).json({
@@ -48,6 +48,7 @@ router.get('/reviews/:id', async (req, res) => {
     const entry = await Location.findOne({ place_id: locationID }).populate({ path: 'reviews', populate: { path: 'author_id' } })
     if (!entry) {
       const new_entry = new Location({
+        name: req.query.place_name,
         place_id: locationID
       })
       await new_entry.save()
@@ -71,27 +72,5 @@ router.get('/reviews/:id', async (req, res) => {
     })
   }
 })
-
-/*
-  *** ignore this ***
-*/
-router.post('/location', async (req, res) => {
-  const placeID = req.body.place_id
-  const newLocation = new Location({
-    placeID
-  })
-  try {
-    await newLocation.save()
-    res.status(201).json({
-      message: 'LOCATION CREATED'
-    })
-  } catch (error) {
-    res.json({
-      message: error
-    })
-  }
-})
-
-router.post('')
 
 module.exports = router
