@@ -71,7 +71,7 @@ router.post('/submit-review', auth, async (req, res) => {
   }
 })
 
-router.delete('/delete-review/:id', async (req, res) => {
+router.delete('/delete-review/:id', auth, async (req, res) => {
   console.log(req.params.id)
   const entry = await Review.findById(req.params.id)
   if (!entry) {

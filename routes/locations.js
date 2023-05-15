@@ -92,4 +92,6 @@ router.post('/location', async (req, res) => {
   }
 })
 
+router.post('')
+
 module.exports = router
