@@ -34,4 +34,17 @@ router.post('/add-favorite/:id', auth, async (req, res) => {
   }
 })
 
+router.get('/favorites/:id', auth, async (req, res) => {
+  try {
+    const user = await User.findOne({ sub: req.params.id }).populate('favorites')
+    const favorites = user.favorites
+    return res.status(200).json({
+      message: 'Success',
+      favorites
+    })
+  } catch (error) {
+    console.log(error)
+  }
+})
+
 module.exports = router

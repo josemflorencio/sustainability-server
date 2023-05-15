@@ -31,7 +31,7 @@ const UserSchema = new mongoose.Schema({
   }],
   favorites: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Locations'
+    ref: 'Location'
   }]
 })
 
