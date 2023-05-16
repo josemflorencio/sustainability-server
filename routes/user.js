@@ -41,6 +41,24 @@ router.post('/add-favorite/:id', auth, async (req, res) => {
   }
 })
 
+router.delete('/delete-favorite/:id', auth, async (req, res) => {
+  try {
+    const location = await Location.findOne({ place_id: req.query.place_id })
+    const locationID = location._id
+    if (!(await User.findOne({favorites: locationID}))) {
+      return res.status(404).json({
+        message: 'location not in favorites'
+      })
+    }
+    await User.findOneAndUpdate({ sub: req.params.id }, { $pull: { favorites: locationID } })
+    return res.status(200).json({
+      message: 'Success'
+    })
+  } catch (error) {
+    console.log(error)
+  }
+})
+
 router.get('/favorites/:id', auth, async (req, res) => {
   try {
     const user = await User.findOne({ sub: req.params.id }).populate('favorites')

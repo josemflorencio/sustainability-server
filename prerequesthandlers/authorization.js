@@ -11,7 +11,6 @@ const jwksClient = JwksRsa({
 })
 
 async function auth (req, res, next) {
-  console.log(req.headers)
   if (!req.headers.authorization) {
     return res.status(401).json({
       message: 'ERROR: must have authorization header'
@@ -27,7 +26,7 @@ async function auth (req, res, next) {
     })
   } catch (error) {
     console.log(error)
-    return res.status(401).end()
+    return res.status(500).end()
   }
   next()
 }
